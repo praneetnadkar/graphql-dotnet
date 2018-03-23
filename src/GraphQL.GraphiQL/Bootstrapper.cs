@@ -27,7 +27,10 @@ namespace GraphQL.GraphiQL
             container.Register<HumanInputType>();
             container.Register<DroidType>();
             container.Register<CharacterInterface>();
-            container.Singleton(new StarWarsSchema(new FuncDependencyResolver(type => container.Get(type))));
+            using (var starWarsSchema = new StarWarsSchema(new FuncDependencyResolver(type => container.Get(type))))
+            {
+                container.Singleton(starWarsSchema);
+            }
 
             return container;
         }
